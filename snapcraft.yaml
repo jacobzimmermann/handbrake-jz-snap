@@ -1,0 +1,62 @@
+name: handbrake
+version: handbrake-jz
+summary: HandBrake is a tool for convertion video to.
+description: |
+  HandBrake is a tool for converting video from nearly any format to a
+  selection of modern, widely supported codecs.
+
+grade: stable
+confinement: strict
+
+plugs:
+  gnome318-runtime:
+    content: gnome318-runtime
+    interface: content
+    target: gnome-runtime
+    default-provider: gnome318-udt:gnome318-runtime
+
+apps:
+  ghb:
+    command: desktop-launch ghb
+    plugs: [unity7, home, gsettings, mount-observe, network, process-control, gnome318-runtime]
+
+parts:
+  ghb:
+    plugin: inbuild
+    configflags:
+      - --prefix=/snap/handbrake-jz/current
+      - --disable-gtk-update-checks
+    source: https://handbrake.fr/rotation.php?file=HandBrake-1.0.0.tar.bz2
+    after: [launcher]
+    build-packages:
+      - libtool-bin
+      - intltool
+      - yasm
+      - cmake
+      - libgudev-1.0-dev
+      - libbz2-dev
+      - zlib1g-dev
+      - libgtk-3-dev
+      - libwebkitgtk-3.0-dev
+      - libnotify-dev
+      - libgstreamer1.0-dev
+      - libgstreamer-plugins-base1.0-dev
+      - libappindicator3-dev
+      - libfribidi-dev
+      - libxml2-dev
+      - libogg-dev
+      - libtheora-dev
+      - libvorbis-dev
+      - libopus-dev
+      - libsamplerate0-dev
+      - libfreetype6-dev
+      - libfontconfig1-dev
+      - libass-dev
+      - libmp3lame-dev
+      - libx264-dev
+      - libjansson-dev
+
+  launcher:
+    plugin: dump
+    source: lp:~ubuntu-desktop/+junk/snap-launcher-hack
+
