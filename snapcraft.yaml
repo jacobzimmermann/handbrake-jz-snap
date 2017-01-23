@@ -1,5 +1,5 @@
 name: handbrake-jz
-version: 1.0.1-0
+version: 1.0.2-0
 summary: HandBrake is a tool for convertion video to.
 description: |
   HandBrake is a tool for converting video from nearly any format to a
@@ -26,7 +26,7 @@ parts:
     configflags:
       - --prefix=/
       - --disable-gtk-update-checks
-    source: https://handbrake.fr/rotation.php?file=HandBrake-1.0.1.tar.bz2
+    source: https://handbrake.fr/rotation.php?file=HandBrake-1.0.2.tar.bz2
     after: [desktop-gtk3]
     build-packages:
       - libtool-bin
@@ -55,11 +55,11 @@ parts:
       - libmp3lame-dev
       - libx264-dev
       - libjansson-dev
-    snap:
+    prime:
       - -share/applications
 
   desktop-gtk3:
-    snap:
+    prime:
       - -usr/include
       - -usr/share/apport
       - -usr/share/doc
