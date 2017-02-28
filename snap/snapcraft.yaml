@@ -27,7 +27,6 @@ parts:
     build-packages:
       - libgtk-3-dev
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
-    source-branch: gnome-platform
     install: mkdir -p $SNAPCRAFT_PART_INSTALL/gnome-platform
 
   ghb:
