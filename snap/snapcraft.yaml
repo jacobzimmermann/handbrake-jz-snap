@@ -71,5 +71,5 @@ parts:
     plugin: nil
     stage-packages:
       - libgtk-3-0
-    snap:
+    prime:
       - "-*"
