@@ -1,5 +1,5 @@
 name: handbrake-jz
-version: 1.0.3-4
+version: 1.0.3-5
 epoch: 2
 summary: HandBrake is a tool for convertion video to.
 description: |
@@ -49,6 +49,8 @@ parts:
       - libmp3lame-dev
       - libx264-dev
       - libjansson-dev
+    stage-packages:
+      - libmirclient9
     prime:
       - -share/applications
     after:
