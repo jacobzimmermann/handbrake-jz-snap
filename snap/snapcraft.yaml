@@ -12,7 +12,7 @@ confinement: strict
 apps:
   ghb:
     command: desktop-launch ghb
-    plugs: [unity7, home, gsettings, mount-observe, network, process-control, gnome318-platform]
+    plugs: [unity7, home, gsettings, mount-observe, network, process-control]
 
 parts:
   ghb:
