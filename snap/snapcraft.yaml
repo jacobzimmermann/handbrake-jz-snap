@@ -1,5 +1,5 @@
 name: handbrake-jz
-version: 1.0.3-5
+version: 1.0.7-0
 epoch: 2
 summary: HandBrake is a tool for convertion video to.
 description: |
@@ -20,7 +20,7 @@ parts:
     configflags:
       - --prefix=/
       - --disable-gtk-update-checks
-    source: https://handbrake.fr/rotation.php?file=HandBrake-1.0.3.tar.bz2
+    source: https://handbrake.fr/rotation.php?file=HandBrake-1.0.7.tar.bz2
     build-packages:
       - g++
       - libtool-bin
