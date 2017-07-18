@@ -9,6 +9,12 @@ description: |
 grade: devel
 confinement: strict
 
+plugs:
+    gnome-3-24-platform:
+      interface: content
+      target: $SNAP/gnome-platform
+      default-provider: gnome-3-24:gnome-3-24-platform
+
 # https://bazaar.launchpad.net/~ubuntu-desktop/+junk/ghex-snap-gnome-3-24/view/head:/snapcraft.yaml
 
 parts:
@@ -68,6 +74,8 @@ parts:
       - libmirclient9
     prime:
       - -share/applications
+    after:
+      - desktop-gnome-platform
 
   # https://bazaar.launchpad.net/~ubuntu-desktop/+junk/ghex-snap-gnome-3-24/view/head:/snapcraft.yaml
 
