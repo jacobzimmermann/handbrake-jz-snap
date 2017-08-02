@@ -65,6 +65,9 @@ parts:
       - -share/applications
     after:
       - desktop-gnome-platform
+    install: |
+      echo Stripping executables
+      strip $SNAPCRAFT_PART_INSTALL/bin/* > /dev/null || /bin/true
 
   # https://bazaar.launchpad.net/~ubuntu-desktop/+junk/ghex-snap-gnome-3-24/view/head:/snapcraft.yaml
   desktop-gnome-platform:
