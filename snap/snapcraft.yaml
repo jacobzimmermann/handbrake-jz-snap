@@ -1,5 +1,5 @@
 name: handbrake-jz
-version: 1.1~4+git9d98250
+version: 1.1~5+gitfaacd7c
 epoch: 2
 summary: HandBrake is a tool for convertion video to.
 description: |
@@ -16,7 +16,6 @@ plugs:
       default-provider: gnome-3-24:gnome-3-24-platform
 
 # https://bazaar.launchpad.net/~ubuntu-desktop/+junk/ghex-snap-gnome-3-24/view/head:/snapcraft.yaml
-
 apps:
   ghb:
     command: desktop-launch ghb
@@ -30,7 +29,7 @@ parts:
       - --disable-gtk-update-checks
     source: https://github.com/HandBrake/HandBrake.git
     source-type: git
-    source-commit: "9d98250"
+    source-commit: "faacd7c"
     build-packages:
       - g++
       - libtool-bin
