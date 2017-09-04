@@ -1,5 +1,5 @@
 name: handbrake-jz
-version: 1.1~7+gitf70d349
+version: 1.1~8+git8ed1ba6
 epoch: 2
 summary: HandBrake is a tool for convertion video to.
 description: |
@@ -29,7 +29,7 @@ parts:
       - --disable-gtk-update-checks
     source: https://github.com/HandBrake/HandBrake.git
     source-type: git
-    source-commit: "f70d349"
+    source-commit: "8ed1ba6"
     build-packages:
       - g++
       - libtool-bin
