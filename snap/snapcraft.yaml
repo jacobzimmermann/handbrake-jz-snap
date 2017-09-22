@@ -1,5 +1,5 @@
 name: handbrake-jz
-version: 1.1~9+gitfe2e79c
+version: 1.1~10+git09d6e77
 epoch: 2
 summary: HandBrake is a tool for convertion video to.
 description: |
@@ -10,10 +10,10 @@ grade: devel
 confinement: strict
 
 plugs:
-    gnome-3-24-platform:
+    gnome-3-26-1604:
       interface: content
       target: $SNAP/gnome-platform
-      default-provider: gnome-3-24:gnome-3-24-platform
+      default-provider: gnome-3-26-1604:gnome-3-26-1604
 
 # https://bazaar.launchpad.net/~ubuntu-desktop/+junk/ghex-snap-gnome-3-24/view/head:/snapcraft.yaml
 apps:
@@ -29,7 +29,7 @@ parts:
       - --disable-gtk-update-checks
     source: https://github.com/HandBrake/HandBrake.git
     source-type: git
-    source-commit: "fe2e79c"
+    source-commit: "09d6e77"
     build-packages:
       - g++
       - libtool-bin
@@ -68,21 +68,8 @@ parts:
       echo Stripping executables
       strip $SNAPCRAFT_PART_INSTALL/bin/* > /dev/null || /bin/true
 
-  # https://bazaar.launchpad.net/~ubuntu-desktop/+junk/ghex-snap-gnome-3-24/view/head:/snapcraft.yaml
-  desktop-gnome-platform:
-    source-subdir: gtk
-    plugin: make
-    make-parameters: ["FLAVOR=gtk3"]
-    build-packages:
-      - libgtk-3-dev
-    source: https://github.com/kenvandine/snapcraft-desktop-helpers.git
-    source-branch: gnome-3-24
-    install: mkdir -p $SNAPCRAFT_PART_INSTALL/gnome-platform
-
   # workaround snapcraft trying to outsmart us by copying ldd listed libraries
   workaround:
     plugin: nil
-    stage-packages:
-      - libgtk-3-0
     prime:
       - "-*"
