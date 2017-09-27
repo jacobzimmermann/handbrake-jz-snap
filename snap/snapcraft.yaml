@@ -18,8 +18,8 @@ plugs:
 # https://bazaar.launchpad.net/~ubuntu-desktop/+junk/ghex-snap-gnome-3-24/view/head:/snapcraft.yaml
 apps:
   ghb:
-    command: desktop-launch ghb
-    plugs: [unity7, home, gsettings, mount-observe, removable-media, network, process-control]
+    command: desktop-launch override-x11
+    plugs: [desktop, desktop-legacy, x11, home, gsettings, mount-observe, removable-media, network, process-control]
 
 parts:
   ghb:
@@ -67,6 +67,12 @@ parts:
     install: |
       echo Stripping executables
       strip $SNAPCRAFT_PART_INSTALL/bin/* > /dev/null || /bin/true
+
+  launcher:
+    plugin: dump
+    source: launcher
+    organize:
+      override-x11: bin/
 
   # workaround snapcraft trying to outsmart us by copying ldd listed libraries
   workaround:
