@@ -15,11 +15,18 @@ plugs:
       target: $SNAP/gnome-platform
       default-provider: gnome-3-26-1604:gnome-3-26-1604
 
+slots:
+    ghbdbus:
+        interface: dbus
+        bus: session
+        name: org.handbrake.ghb
+
 # https://bazaar.launchpad.net/~ubuntu-desktop/+junk/ghex-snap-gnome-3-24/view/head:/snapcraft.yaml
 apps:
   ghb:
     command: desktop-launch override-x11
     plugs: [desktop, desktop-legacy, x11, home, gsettings, mount-observe, removable-media, network, process-control]
+    slots: [ghbdbus]
 
 parts:
   ghb:
