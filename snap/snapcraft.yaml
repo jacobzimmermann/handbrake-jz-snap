@@ -1,5 +1,5 @@
 name: handbrake-jz
-version: 1.1~18+git2845916
+version: 1.1~19+gitc6c95f3
 epoch: 2
 summary: HandBrake is a tool for convertion video to.
 description: |
@@ -24,7 +24,7 @@ slots:
 # https://bazaar.launchpad.net/~ubuntu-desktop/+junk/ghex-snap-gnome-3-24/view/head:/snapcraft.yaml
 apps:
   ghb:
-    command: desktop-launch override-x11
+    command: desktop-launch env GDK_BACKEND=x11 ghb
     plugs: [desktop, desktop-legacy, x11, home, gsettings, mount-observe, removable-media, network, process-control]
     slots: [ghbdbus]
 
@@ -36,7 +36,7 @@ parts:
       - --disable-gtk-update-checks
     source: https://github.com/HandBrake/HandBrake.git
     source-type: git
-    source-commit: "2845916"
+    source-commit: "c6c95f3"
     build-packages:
       - g++
       - libtool-bin
@@ -74,12 +74,6 @@ parts:
     install: |
       echo Stripping executables
       strip $SNAPCRAFT_PART_INSTALL/bin/* > /dev/null || /bin/true
-
-  launcher:
-    plugin: dump
-    source: launcher
-    organize:
-      override-x11: bin/
 
   # workaround snapcraft trying to outsmart us by copying ldd listed libraries
   workaround:
