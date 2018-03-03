@@ -69,6 +69,7 @@ parts:
       - libmp3lame-dev
       - libx264-dev
       - libjansson-dev
+      - execstack
     stage-packages:
       - libmirclient9
     prime:
@@ -78,9 +79,10 @@ parts:
     install: |
       echo Stripping executables
       strip $SNAPCRAFT_PART_INSTALL/bin/* > /dev/null || /bin/true
+      execstack --clear-execstack $SNAPCRAFT_PART_INSTALL/bin/* > /dev/null || /bin/true
 
   # workaround snapcraft trying to outsmart us by copying ldd listed libraries
   workaround:
     plugin: nil
     prime:
-      - "-*"
+      - "*"
