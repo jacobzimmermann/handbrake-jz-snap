@@ -85,4 +85,4 @@ parts:
   workaround:
     plugin: nil
     prime:
-      - "*"
+      - -"*"
