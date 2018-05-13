@@ -6,7 +6,7 @@ description: |
   HandBrake is a tool for converting video from nearly any format to a
   selection of modern, widely supported codecs.
 
-grade: devel
+grade: stable
 confinement: strict
 
 plugs:
@@ -74,7 +74,8 @@ parts:
       - -share/applications
     after:
       - desktop-gnome-platform
-    install: |
+    override-build: |
+      snapcraftctl build
       echo Stripping executables
       strip $SNAPCRAFT_PART_INSTALL/bin/* > /dev/null || /bin/true
       execstack --clear-execstack $SNAPCRAFT_PART_INSTALL/bin/* > /dev/null || /bin/true
