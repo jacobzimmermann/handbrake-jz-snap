@@ -25,12 +25,12 @@ slots:
 apps:
   ghb:
     command: desktop-launch env GDK_BACKEND=x11 ghb
-    plugs: [desktop, desktop-legacy, x11, home, gsettings, mount-observe, removable-media, network, process-control]
+    plugs: [desktop, desktop-legacy, x11, home, gsettings, mount-observe, removable-media, optical-drive, network, process-control]
     slots: [ghbdbus]
 
   cli:
     command: HandBrakeCLI
-    plugs: [home, removable-media, process-control]
+    plugs: [home, removable-media, optical-drive, process-control]
 
 parts:
   ghb:
@@ -75,6 +75,11 @@ parts:
     after:
       - desktop-gnome-platform
     override-build: |
+      OLDDIR=$PWD
+      cd ..
+      patch -p1 < ../../no-gtk-show-uri-on-window.patch
+      cd $OLDDIR
+      unset OLDDIR
       snapcraftctl build
       echo Stripping executables
       strip $SNAPCRAFT_PART_INSTALL/bin/* > /dev/null || /bin/true
