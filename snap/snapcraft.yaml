@@ -1,6 +1,7 @@
 name: handbrake-jz
-version: 1.1.1
+version: 1.2.2
 epoch: 0
+base: core18
 summary: HandBrake is a tool for convertion video to.
 description: |
   HandBrake is a tool for converting video from nearly any format to a
@@ -10,10 +11,22 @@ grade: stable
 confinement: strict
 
 plugs:
-    gnome-3-26-1604:
+    gnome-3-28-1804:
       interface: content
       target: $SNAP/gnome-platform
-      default-provider: gnome-3-26-1604:gnome-3-26-1604
+      default-provider: gnome-3-28-1804
+    gtk-3-themes:
+      interface: content
+      target: $SNAP/data-dir/themes
+      default-provider: gtk-common-themes
+    icon-themes:
+      interface: content
+      target: $SNAP/data-dir/icons
+      default-provider: gtk-common-themes
+    sound-themes:
+      interface: content
+      target: $SNAP/data-dir/sounds
+      default-provider: gtk-common-themes
 
 slots:
     ghbdbus:
@@ -21,16 +34,21 @@ slots:
         bus: session
         name: org.handbrake.ghb
 
+environment:
+    XDG_DATA_DIRS: $SNAP/data-dir:$XDG_DATA_DIRS
+    GSETTINGS_SCHEMA_DIR: $SNAP/share/glib-2.0/schemas
+    GTK_USE_PORTAL: 1
+
 # https://bazaar.launchpad.net/~ubuntu-desktop/+junk/ghex-snap-gnome-3-24/view/head:/snapcraft.yaml
 apps:
   ghb:
-    command: desktop-launch env GDK_BACKEND=x11 ghb
-    plugs: [desktop, desktop-legacy, x11, home, gsettings, mount-observe, removable-media, optical-drive, network, process-control]
+    command: desktop-launch ghb
+    plugs: [desktop, desktop-legacy, wayland, opengl, x11, home, gsettings, mount-observe, removable-media, optical-drive, network, process-control]
     slots: [ghbdbus]
 
   cli:
     command: HandBrakeCLI
-    plugs: [home, removable-media, optical-drive, process-control]
+    plugs: [home, removable-media, optical-drive, process-control, mount-observe]
 
 parts:
   ghb:
@@ -38,13 +56,14 @@ parts:
     configflags:
       - --prefix=/
       - --disable-gtk-update-checks
-    source: https://download.handbrake.fr/releases/1.1.1/HandBrake-1.1.1-source.tar.bz2
+    source: https://download.handbrake.fr/releases/1.2.2/HandBrake-1.2.2-source.tar.bz2
     build-packages:
       - g++
       - libtool-bin
       - intltool
-      - yasm
+      - nasm
       - cmake
+      - python2.7
       - libgudev-1.0-dev
       - libbz2-dev
       - zlib1g-dev
@@ -66,27 +85,41 @@ parts:
       - libass-dev
       - libmp3lame-dev
       - libx264-dev
+      - libspeex-dev
       - libjansson-dev
+      - liblzma-dev
       - execstack
     stage-packages:
-      - libmirclient9
+      - libx264-152
+      - libopus0
+      - libspeex1
+      - libmp3lame0
+      - libtheora0
+      - libass9
     prime:
       - -share/applications
     after:
       - desktop-gnome-platform
     override-build: |
-      OLDDIR=$PWD
-      cd ..
-      patch -p1 < ../../no-gtk-show-uri-on-window.patch
-      cd $OLDDIR
-      unset OLDDIR
       snapcraftctl build
       echo Stripping executables
       strip $SNAPCRAFT_PART_INSTALL/bin/* > /dev/null || /bin/true
       execstack --clear-execstack $SNAPCRAFT_PART_INSTALL/bin/* > /dev/null || /bin/true
 
+  desktop-gnome-platform:
+    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
+    source-subdir: gtk
+    plugin: make
+    make-parameters: ["FLAVOR=gtk3"]
+    build-packages:
+      - build-essential
+      - libgtk-3-dev
+    override-build: |
+      snapcraftctl build
+      mkdir -pv $SNAPCRAFT_PART_INSTALL/gnome-platform
+
   # workaround snapcraft trying to outsmart us by copying ldd listed libraries
   workaround:
     plugin: nil
     prime:
-      - -"*"
+      - "-*"
