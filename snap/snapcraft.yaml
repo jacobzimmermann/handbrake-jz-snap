@@ -12,27 +12,27 @@ confinement: strict
 
 plugs:
     gnome-3-28-1804:
-      interface: content
-      target: $SNAP/gnome-platform
-      default-provider: gnome-3-28-1804
+        interface: content
+        target: $SNAP/gnome-platform
+        default-provider: gnome-3-28-1804
     gtk-3-themes:
-      interface: content
-      target: $SNAP/data-dir/themes
-      default-provider: gtk-common-themes
+        interface: content
+        target: $SNAP/data-dir/themes
+        default-provider: gtk-common-themes
     icon-themes:
-      interface: content
-      target: $SNAP/data-dir/icons
-      default-provider: gtk-common-themes
+        interface: content
+        target: $SNAP/data-dir/icons
+        default-provider: gtk-common-themes
     sound-themes:
-      interface: content
-      target: $SNAP/data-dir/sounds
-      default-provider: gtk-common-themes
+        interface: content
+        target: $SNAP/data-dir/sounds
+        default-provider: gtk-common-themes
 
 slots:
     ghbdbus:
         interface: dbus
         bus: session
-        name: org.handbrake.ghb
+        name: fr.handbrake.ghb
 
 environment:
     XDG_DATA_DIRS: $SNAP/data-dir:$XDG_DATA_DIRS
@@ -41,85 +41,94 @@ environment:
 
 # https://bazaar.launchpad.net/~ubuntu-desktop/+junk/ghex-snap-gnome-3-24/view/head:/snapcraft.yaml
 apps:
-  ghb:
-    command: desktop-launch ghb
-    plugs: [desktop, desktop-legacy, wayland, opengl, x11, home, gsettings, mount-observe, removable-media, optical-drive, network, process-control]
-    slots: [ghbdbus]
+    ghb:
+        command: desktop-launch ghb
+        plugs: [desktop, desktop-legacy, wayland, opengl, x11, home, mount-observe, removable-media, optical-drive, network, process-control]
+        slots: [ghbdbus]
 
-  cli:
-    command: HandBrakeCLI
-    plugs: [home, removable-media, optical-drive, process-control, mount-observe]
+    cli:
+        command: HandBrakeCLI
+        plugs: [home, removable-media, optical-drive, process-control, mount-observe]
 
 parts:
-  ghb:
-    plugin: inbuild
-    configflags:
-      - --prefix=/
-      - --disable-gtk-update-checks
-    source: https://download.handbrake.fr/releases/1.2.2/HandBrake-1.2.2-source.tar.bz2
-    build-packages:
-      - g++
-      - libtool-bin
-      - intltool
-      - nasm
-      - cmake
-      - python2.7
-      - libgudev-1.0-dev
-      - libbz2-dev
-      - zlib1g-dev
-      - libgtk-3-dev
-      - libwebkitgtk-3.0-dev
-      - libnotify-dev
-      - libgstreamer1.0-dev
-      - libgstreamer-plugins-base1.0-dev
-      - libappindicator3-dev
-      - libfribidi-dev
-      - libxml2-dev
-      - libogg-dev
-      - libtheora-dev
-      - libvorbis-dev
-      - libopus-dev
-      - libsamplerate0-dev
-      - libfreetype6-dev
-      - libfontconfig1-dev
-      - libass-dev
-      - libmp3lame-dev
-      - libx264-dev
-      - libspeex-dev
-      - libjansson-dev
-      - liblzma-dev
-      - execstack
-    stage-packages:
-      - libx264-152
-      - libopus0
-      - libspeex1
-      - libmp3lame0
-      - libtheora0
-      - libass9
-    prime:
-      - -share/applications
-    after:
-      - desktop-gnome-platform
-    override-build: |
-      snapcraftctl build
-      echo Stripping executables
-      strip $SNAPCRAFT_PART_INSTALL/bin/* > /dev/null || /bin/true
-      execstack --clear-execstack $SNAPCRAFT_PART_INSTALL/bin/* > /dev/null || /bin/true
+    ghb:
+        plugin: inbuild
+        configflags:
+            - --prefix=/
+            - --disable-gtk-update-checks
+        source: https://download.handbrake.fr/releases/1.2.2/HandBrake-1.2.2-source.tar.bz2
+        build-packages:
+            - g++
+            - libtool-bin
+            - intltool
+            - nasm
+            - cmake
+            - python2.7
+            - libgudev-1.0-dev
+            - libbz2-dev
+            - zlib1g-dev
+            - libgtk-3-dev
+            - libwebkitgtk-3.0-dev
+            - libnotify-dev
+            - libgstreamer1.0-dev
+            - libgstreamer-plugins-base1.0-dev
+            - libappindicator3-dev
+            - libfribidi-dev
+            - libxml2-dev
+            - libogg-dev
+            - libtheora-dev
+            - libvorbis-dev
+            - libopus-dev
+            - libsamplerate0-dev
+            - libfreetype6-dev
+            - libfontconfig1-dev
+            - libass-dev
+            - libmp3lame-dev
+            - libx264-dev
+            - libspeex-dev
+            - libjansson-dev
+            - liblzma-dev
+            - execstack
+        stage-packages:
+            - libx264-152
+            - libopus0
+            - libspeex1
+            - libmp3lame0
+            - libtheora0
+            - libass9
+            - libjansson4
+            - gstreamer1.0-plugins-good
+            - libslang2
+        prime:
+            - -share/applications
+            - -share/doc
+            - -usr/share/lintian
+            - -usr/share/doc
+            - -usr/share/doc-base
+            - -usr/share/man
+            - -usr/share/pkgconfig
+        after:
+            - desktop-gnome-platform
+        override-build: |
+            snapcraftctl build
+            echo Stripping executables
+            strip $SNAPCRAFT_PART_INSTALL/bin/* > /dev/null || /bin/true
+            execstack --clear-execstack $SNAPCRAFT_PART_INSTALL/bin/* > /dev/null || /bin/true
 
-  desktop-gnome-platform:
-    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
-    source-subdir: gtk
-    plugin: make
-    make-parameters: ["FLAVOR=gtk3"]
-    build-packages:
-      - build-essential
-      - libgtk-3-dev
-    override-build: |
-      snapcraftctl build
-      mkdir -pv $SNAPCRAFT_PART_INSTALL/gnome-platform
+    desktop-gnome-platform:
+        source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
+        source-subdir: gtk
+        plugin: make
+        make-parameters: ["FLAVOR=gtk3"]
+        build-packages:
+            - build-essential
+            - libgtk-3-dev
+        override-build: |
+            snapcraftctl build
+            mkdir -pv $SNAPCRAFT_PART_INSTALL/gnome-platform
 
-  # workaround snapcraft trying to outsmart us by copying ldd listed libraries
-  workaround:
-    plugin: nil
-    prime:
-      - "-*"
+    # workaround snapcraft trying to outsmart us by copying ldd listed libraries
+    workaround:
+        plugin: nil
+        prime:
+        - "-*"
