@@ -96,8 +96,11 @@ parts:
       - libmp3lame0
       - libtheora0
       - libass9
+      - libjansson4
+      - gstreamer1.0-plugins-good
     prime:
       - -share/applications
+      - -share/doc
     after:
       - desktop-gnome-platform
     override-build: |
