@@ -17,16 +17,16 @@ plugs:
         default-provider: gnome-3-28-1804
     gtk-3-themes:
         interface: content
-        target: $SNAP/data-dir/themes
-        default-provider: gtk-common-themes
+        target: $SNAP/share/themes
+        default-provider: gtk-common-themes:gtk-3-themes
     icon-themes:
         interface: content
-        target: $SNAP/data-dir/icons
-        default-provider: gtk-common-themes
+        target: $SNAP/share/icons
+        default-provider: gtk-common-themes:icon-themes
     sound-themes:
         interface: content
-        target: $SNAP/data-dir/sounds
-        default-provider: gtk-common-themes
+        target: $SNAP/share/sounds
+        default-provider: gtk-common-themes:sounds-themes
 
 slots:
     ghbdbus:
@@ -43,7 +43,7 @@ environment:
 apps:
     ghb:
         command: desktop-launch ghb
-        plugs: [desktop, desktop-legacy, wayland, opengl, x11, home, mount-observe, removable-media, optical-drive, network, process-control]
+        plugs: [desktop, desktop-legacy, gsettings, wayland, opengl, x11, home, mount-observe, removable-media, optical-drive, network, process-control]
         slots: [ghbdbus]
 
     cli:
